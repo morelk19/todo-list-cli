@@ -2,6 +2,7 @@ const prompt = require('prompt-sync')({sigint: true});
 let toDoArr = [];
 let listItem = "";
 let listChoice = "";
+let deleteChoice = "";
 
 
 printTitle();
@@ -29,12 +30,30 @@ while(choice !== 3){
     }else if(choice === 2){
         if(toDoArr.length > 0){
             console.log(`\nWhich to-do item would you like to complete?`);
-            listChoice = Number(prompt(`>`));
+            listChoice= Number(prompt(`>`));
             while(isNaN(listChoice) || listChoice > toDoArr.length || listChoice < 1){
                 console.log(`Cannot pick outside of list range. Try again.`);
                 listChoice = Number(prompt(`>`));
             }
             completeItem(toDoArr, listChoice);
+            if(toDoArr.length === 0){
+                console.log(`Your to-do list is empty.`);
+            }else{
+                printList();
+            }
+            printMenu();
+        }else{
+            console.log(`Please create an item on the to list first.`)
+        }
+    }else if(choice === 4){
+        if(toDoArr.length > 0){
+            console.log(`\nWhich to-do item would you like to delete?`);
+            deleteChoice = Number(prompt(`>`));
+            while(isNaN(deleteChoice) || deleteChoice > toDoArr.length || deleteChoice < 1){
+                console.log(`Cannot pick outside of list range. Try again.`);
+                deleteChoice = Number(prompt(`>`));
+            }
+            deleteItem(toDoArr, deleteChoice);
             if(toDoArr.length === 0){
                 console.log(`Your to-do list is empty.`);
             }else{
@@ -57,6 +76,11 @@ function completeItem(arr, num){
     arr[num-1] = `[complete] ` + arr[num-1];
 }
 
+function deleteItem(arr, num){
+    arr.splice(num-1, 1);
+
+}
+
 function toDoItem(arr, str){
 
     console.log(`What is this to-do item called?`);
@@ -76,7 +100,8 @@ function printMenu(){
     console.log(`\n~ Select an action ~
     [1] Create a to-do item
     [2] Complete a to-do item
-    [3] Exit`);
+    [3] Exit
+    [4] Delete an item`);
 }
 
 function printTitle(){
