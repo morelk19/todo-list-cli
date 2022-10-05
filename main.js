@@ -1,10 +1,66 @@
 const prompt = require('prompt-sync')({sigint: true});
+let toDoArr = [];
+let listItem = "";
+let listChoice = "";
 
-function printTitle(){
-    console.log(`Welcome to the To-Do List Manager Application! 
 
-    ==============================================
-    `);
+printTitle();
+console.log(`Your to-do list is empty.`);
+printMenu();
+
+let choice = Number(prompt('>'));
+
+while(choice !== 3){
+    if(choice === 1){
+        
+        console.log(`\n~ Creating a new to-do item ~`);
+        listItem = prompt(`>`)
+        while(listItem.length === 0 ){
+            console.log(`Cannot create empty to-do item. Try again.`)
+            listItem = prompt(`>`)
+        }
+        toDoItem(toDoArr, listItem);
+        if(toDoArr.length === 0){
+            console.log(`Your to-do list is empty.`);
+        }else{
+            printList();
+        }
+        printMenu();
+    }else if(choice === 2){
+        if(toDoArr.length > 0){
+            console.log(`\nWhich to-do item would you like to complete?`);
+            listChoice = Number(prompt(`>`));
+            while(isNaN(listChoice) || listChoice > toDoArr.length || listChoice < 1){
+                console.log(`Cannot pick outside of list range. Try again.`);
+                listChoice = Number(prompt(`>`));
+            }
+            completeItem(toDoArr, listChoice);
+            if(toDoArr.length === 0){
+                console.log(`Your to-do list is empty.`);
+            }else{
+                printList();
+            }
+            printMenu();
+        }else{
+            console.log(`Please create an item on the to list first.`)
+        }
+
+    }
+    choice = Number(prompt('>'));
+}
+
+function completeItem(arr, num){
+    console.log(`Which to-do item would you like to complete?`);
+    let string = arr[num-1].substring(13);
+    arr[num-1] = arr[num-1].substring(13
+        );
+    arr[num-1] = `[complete] ` + arr[num-1];
+}
+
+function toDoItem(arr, str){
+
+    console.log(`What is this to-do item called?`);
+    arr.push(`[incomplete] ` + str);
 }
 
 function printList(){
@@ -23,48 +79,9 @@ function printMenu(){
     [3] Exit`);
 }
 
-function toDoItem(arr, str){
+function printTitle(){
+    console.log(`Welcome to the To-Do List Manager Application! 
 
-    console.log(`What is this to-do item called?`);
-    arr.push(`[incomplete] ` + str);
-}
-
-function completeItem(arr, num){
-    console.log(`Which to-do item would you like to complete?`);
-    let string = arr[num-1].substring(13);
-    arr[num-1] = arr[num-1].substring(13
-        );
-    arr[num-1] = `[complete] ` + arr[num-1];
-}
-
-let toDoArr = [];
-printTitle();
-if(toDoArr.length === 0){
-    console.log(`Your to-do list is empty.`);
-}
-printMenu();
-
-let choice = Number(prompt('>'));
-
-while(choice !== 3){
-    if(choice === 1){
-        console.log(`\n~ Creating a new to-do item ~`);
-        toDoItem(toDoArr, String(prompt(`>`)));
-        if(toDoArr.length === 0){
-            console.log(`Your to-do list is empty.`);
-        }else{
-            printList();
-        }
-        printMenu();
-    }else if(choice === 2){
-        console.log(`\nWhich to-do item would you like to complete?`);
-        completeItem(toDoArr, Number(prompt(`>`)))
-        if(toDoArr.length === 0){
-            console.log(`Your to-do list is empty.`);
-        }else{
-            printList();
-        }
-        printMenu();
-    }
-    choice = Number(prompt('>'));
+    ==============================================
+    `);
 }
